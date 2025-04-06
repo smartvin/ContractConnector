@@ -1,0 +1,36 @@
+{
+  "myUSDC": "0x7FcBcbFAD22921310fCE0Dd81E99c1dA5AfF5d5c",
+  "NFTICKET": "0x000000000000000000000000000000000000DEAD",
+  "TREASURY_ADDRESS": "0x6ca6221697b299869758b647C2D1F7Ac3409cb7B",
+  "MANAGER_LIB_ADDRESS": "0xB336bd709367Bb7a71F97F362e9b514f1dEEdb42",
+  "STAKER_ADDRESSES": [
+    {
+      "name": "AtalantaSturmGraz01211845",
+      "type": "MULTIPLE_CHOICE",
+      "address": "0x18675065Dc35D3349f68B8E07d5C462c629A31Bd",
+      "status": "INIT",
+      "MANAGER_LIB_ADDRESS": "0xB336bd709367Bb7a71F97F362e9b514f1dEEdb42"
+    },
+    {
+      "name": "MonacoAstonVilla01211845",
+      "type": "MULTIPLE_CHOICE",
+      "address": "0xE4012b95C4C7Bef112E8a47F87241b460cB21aF5",
+      "status": "INIT",
+      "MANAGER_LIB_ADDRESS": "0xB336bd709367Bb7a71F97F362e9b514f1dEEdb42"
+    },
+    {
+      "name": "BratislavaStuttgart01212100",
+      "type": "MULTIPLE_CHOICE",
+      "address": "0x1F1E9bf1f1e75CEd8D8DB0B9b714f7bD045DeAf7",
+      "status": "INIT",
+      "MANAGER_LIB_ADDRESS": "0xB336bd709367Bb7a71F97F362e9b514f1dEEdb42"
+    },
+    {
+      "name": "ClubBruggeJuventus01212100",
+      "type": "MULTIPLE_CHOICE",
+      "address": "0x36598fc65256BfAF145BcD97fc608Cf518e0D01e",
+      "status": "INIT",
+      "MANAGER_LIB_ADDRESS": "0xB336bd709367Bb7a71F97F362e9b514f1dEEdb42"
+    }
+  ]
+}
