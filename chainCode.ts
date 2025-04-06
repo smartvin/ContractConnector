@@ -17,8 +17,6 @@ export type stakerContract = {
 };
 
 export class ChainCode {
-  public static USE_WC = true;
-  public static WALLET_CONNECTED = false;
   public static chainID: number;
   public static accounts: any[] = [];
   public static signer: any;
@@ -29,77 +27,9 @@ export class ChainCode {
   public static usdcContractReadOnly: any;
   public static stakeTreasuryContract: any;
   public static stakeTreasuryContractReadOnly: any;
-  public static nfticket: any;
   public static web3provider: any = null;
   public static stakes: string[] = [];
 
-  static async wc_initWallet(provider: any, address: string, chainID: number, signer: any) {
-    console.log("Starting wc_initWallet...");
-    console.log("Provider:", provider);
-    console.log("Address:", address);
-    console.log("ChainID:", chainID);
-
-    try {
-      ChainCode.chainID = chainID;
-      ChainCode.accounts[0] = address;
-      ChainCode.WALLET_CONNECTED = true;
-      console.log("WALLET_CONNECTED=%s", ChainCode.WALLET_CONNECTED);
-      console.log("initializing ChainCode with address %s on chain %s", address, chainID);
-
-      // Store the original WalletConnect provider for write operations
-      ChainCode.web3provider = provider;
-
-      // Create a signer that uses the WalletConnect provider directly
-      ChainCode.signer = signer;
-      console.log("We are signing with %s", await ChainCode.signer.address);
-
-      // Initialize contracts with both providers
-      await ChainCode.initContracts();
-      console.log("wc_initWallet completed successfully");
-      return true;
-    } catch (error) {
-      console.error("Error in wc_initWallet:", error);
-      ChainCode.WALLET_CONNECTED = false;
-      throw error;
-    }
-  }
-
-  static async initWallet(): Promise<any> {
-    if (process.env.REACT_APP_USE_WC === "false") {
-      try {
-        if (window.ethereum) {
-          await window?.ethereum.request({
-            method: "eth_requestAccounts",
-          });
-          let window_accounts: any = await window?.ethereum.request({
-            method: "eth_accounts",
-          });
-          ChainCode.accounts = ((window_accounts === undefined) ? [] : window_accounts);
-          if (window_accounts === undefined) {
-            throw new Error("no eth_accounts found");
-          } else {
-            ChainCode.web3provider = new ethers.BrowserProvider(
-              window?.ethereum as any
-            );
-            let chainIDBN: bigint = (await ChainCode.web3provider.getNetwork()).chainId;
-            ChainCode.chainID = Number(chainIDBN);
-            ChainCode.WALLET_CONNECTED = true;
-            ChainCode.signer = await ChainCode.web3provider.getSigner(ChainCode.accounts[0]);
-          }
-        } else {
-          throw new Error("no browser EOA wallet found");
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          alert(error.message);
-          return Promise.resolve("");
-        }
-      }
-    } else {
-      throw new Error("We are not in MetaMask mode");
-    }
-    return Promise.resolve(ChainCode.signer);
-  }
   /***
    *
    * @notice here we initialize the smart contracts for the frontend
@@ -107,18 +37,19 @@ export class ChainCode {
    * @return stakerContract
    *
    ***/
-  static async initContracts(): Promise<[any, any, any]> {
+  static async initContracts(chain: any, network: number, signer:any): Promise<[any, any, any]> {
     let configData: any;
-    let signer: any;
 
-    console.log("USE_WC = %s", ChainCode.USE_WC);
-    signer = await ChainCode.signer;
-    console.log("using %s as chain", ChainCode.chainID);
+    ChainCode.chainID = network;
+    console.log("ConfigData is %s", configDataPolygon);
+    console.log("ChainCode.initContracts: using %d as chain for %s", 
+      ChainCode.chainID, chain);
 
     // ChainCode.chainID is already a number, no need to convert
-    switch (ChainCode.chainID) {
+    switch (network) {
       case 80002:  // Amoy testnet
         configData = configDataAmoy;
+        console.log("configData is %s", configData);
         break;
       case 137:    // Polygon mainnet
         configData = configDataPolygon;
